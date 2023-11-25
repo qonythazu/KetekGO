@@ -24,4 +24,8 @@
     <string name="to_icon">to_icon</string>
     <string name="capacity_icon">capacity_icon</string>
     <string name="time_icon">time_icon</string>
+    <string name="destination">destination</string>
+    <string name="date">23/01/2002</string>
+    <string name="belum_dibayar">BELUM DIBAYAR</string>
+    <string name="batalkan">BATALKAN</string>
 </resources>
