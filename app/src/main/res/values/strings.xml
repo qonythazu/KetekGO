@@ -28,4 +28,9 @@
     <string name="date">23/01/2002</string>
     <string name="belum_dibayar">BELUM DIBAYAR</string>
     <string name="batalkan">BATALKAN</string>
+    <string name="edit">EDIT</string>
+    <string name="delete">HAPUS</string>
+    <string name="customer">Pemesan :</string>
+    <string name="customer_name">AhmadRonaldo</string>
+    <string name="checklist_already_pay">TANDAI SUDAH DIBAYAR</string>
 </resources>
