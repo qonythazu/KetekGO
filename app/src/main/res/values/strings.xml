@@ -42,4 +42,26 @@
     <string name="example_email">ahmadronaldo123@mail.com</string>
     <string name="customer_role">Costumer</string>
     <string name="my_notification">My Notification</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="capacity">Kapasitas</string>
+    <string name="price">Price</string>
+    <string name="time">Time</string>
+    <string name="gallery">GALLERY</string>
+    <string name="camera">CAMERA</string>
+    <string name="upload">UPLOAD</string>
+    <string name="booking_detail">Detail Pesanan</string>
+    <string name="to">Tujuan</string>
+    <string name="go_time">Waktu Berangkat</string>
+    <string name="passengers">Penumpang</string>
+    <string name="_7">7</string>
+    <string name="cancel">BATAL</string>
+    <string name="pay">BAYAR 20.000</string>
+    <string name="sure_to_book">Yakin Ingin Booking?</string>
+    <string name="lokasi">LOKASI</string>
+    <string name="perjalanan">PERJALANAN</string>
+    <string name="harga">HARGA</string>
+    <string name="deskripsi">DESKRIPSI</string>
+    <string name="example_description">Pulau yang sangat indah. Menawarkan berbagai macam views yang aestetik coy</string>
+    <string name="example_location">Sebelah barat dari Pulau Utama</string>
+    <string name="example_travel">Perjalanan menggunakan perahu Ketek, sekitar 30 menit dari Pulau Utama</string>
 </resources>
