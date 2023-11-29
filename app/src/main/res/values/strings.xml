@@ -33,4 +33,13 @@
     <string name="customer">Pemesan :</string>
     <string name="customer_name">AhmadRonaldo</string>
     <string name="checklist_already_pay">TANDAI SUDAH DIBAYAR</string>
+    <string name="what_is_in_palembang">Apa Aja di Palembang?</string>
+    <string name="want_to_ride_ketek">Mau Naik Ketek?</string>
+    <string name="booking_history">Riwayat Pemesanan</string>
+    <string name="email_example">pakusmanganteng@mail.com</string>
+    <string name="driver">Driver</string>
+    <string name="my_ketek">My Ketek</string>
+    <string name="example_email">ahmadronaldo123@mail.com</string>
+    <string name="customer_role">Costumer</string>
+    <string name="my_notification">My Notification</string>
 </resources>
