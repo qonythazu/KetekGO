@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.dicoding.ketekgo.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_destinationDetailFragment"
+            app:destination="@id/destinationDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookingFragment"
+        android:name="com.dicoding.ketekgo.fragment.BookingFragment"
+        android:label="fragment_booking"
+        tools:layout="@layout/fragment_booking" >
+        <action
+            android:id="@+id/action_bookingFragment_to_bookingDetailFragment"
+            app:destination="@id/bookingDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.dicoding.ketekgo.fragment.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" />
+    <fragment
+        android:id="@+id/profileCostumerFragment"
+        android:name="com.dicoding.ketekgo.fragment.ProfileCostumerFragment"
+        android:label="fragment_profile_costumer"
+        tools:layout="@layout/fragment_profile_costumer" />
+    <fragment
+        android:id="@+id/destinationDetailFragment"
+        android:name="com.dicoding.ketekgo.fragment.DestinationDetailFragment"
+        android:label="fragment_destination_detail"
+        tools:layout="@layout/fragment_destination_detail" />
+    <fragment
+        android:id="@+id/bookingDetailFragment"
+        android:name="com.dicoding.ketekgo.fragment.BookingDetailFragment"
+        android:label="fragment_booking_detail"
+        tools:layout="@layout/fragment_booking_detail" />
+</navigation>
