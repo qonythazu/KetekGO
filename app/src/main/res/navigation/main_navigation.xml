@@ -10,6 +10,9 @@
         android:name="com.dicoding.ketekgo.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_destinationGridFragment"
+            app:destination="@id/destinationGridFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookingFragment"
@@ -40,4 +43,18 @@
         android:name="com.dicoding.ketekgo.fragment.BookingDetailFragment"
         android:label="fragment_booking_detail"
         tools:layout="@layout/fragment_booking_detail" />
+    <fragment
+        android:id="@+id/destinationGridFragment"
+        android:name="com.dicoding.ketekgo.fragment.DestinationGridFragment"
+        android:label="fragment_destination_grid"
+        tools:layout="@layout/fragment_destination_grid" >
+        <action
+            android:id="@+id/action_destinationGridFragment_to_destinationInputPreferenceFragment"
+            app:destination="@id/destinationInputPreferenceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/destinationInputPreferenceFragment"
+        android:name="com.dicoding.ketekgo.fragment.DestinationInputPreferenceFragment"
+        android:label="fragment_destination_input_preference"
+        tools:layout="@layout/fragment_destination_input_preference" />
 </navigation>
