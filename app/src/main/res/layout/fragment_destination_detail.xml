@@ -29,101 +29,86 @@
         app:layout_constraintStart_toStartOf="@id/destination_photo"
         app:layout_constraintBottom_toBottomOf="@id/destination_photo"/>
 
-    <TextView
-        android:id="@+id/tv_destination_description"
-        android:layout_width="120dp"
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/deskripsi"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/main_blue"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@id/destination_photo"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_destination_loc"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="@string/lokasi"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/main_blue"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_destination_description"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_destination_travel"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="@string/perjalanan"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/main_blue"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_destination_loc"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_destination_price"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="@string/harga"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/main_blue"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_destination_travel"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_detail_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minLines="2"
-        android:text="@string/example_description"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@id/tv_destination_description"
-        app:layout_constraintTop_toBottomOf="@id/destination_photo"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/tv_destination_description"/>
+        app:layout_constraintTop_toBottomOf="@id/destination_photo">
 
-    <TextView
-        android:id="@+id/tv_detail_loc"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minLines="2"
-        android:text="@string/example_location"
-        app:layout_constraintStart_toEndOf="@id/tv_destination_loc"
-        app:layout_constraintTop_toBottomOf="@id/tv_detail_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/tv_destination_loc"/>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
-    <TextView
-        android:id="@+id/tv_detail_travel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:minLines="2"
-        android:text="@string/example_travel"
-        app:layout_constraintStart_toEndOf="@id/tv_destination_travel"
-        app:layout_constraintTop_toBottomOf="@id/tv_detail_loc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/tv_destination_travel"/>
+            <TextView
+                android:layout_marginEnd="16dp"
+                android:text="@string/deskripsi"
+                android:textSize="16sp"
+                android:textColor="@color/main_blue"
+                android:textStyle="bold"
+                android:padding="8dp"/>
 
-    <TextView
-        android:id="@+id/tv_detail_price"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/_10_000_00"
-        app:layout_constraintStart_toEndOf="@id/tv_destination_price"
-        app:layout_constraintTop_toBottomOf="@id/tv_detail_travel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/tv_destination_price"/>
+            <TextView
+                android:text="@string/example_description"
+                android:layout_weight="1"
+                android:padding="8dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
 
+            <TextView
+                android:layout_marginEnd="16dp"
+                android:text="@string/lokasi"
+                android:textSize="16sp"
+                android:textColor="@color/main_blue"
+                android:textStyle="bold"
+                android:padding="8dp"/>
 
+            <TextView
+                android:text="@string/example_location"
+                android:layout_weight="1"
+                android:padding="8dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_marginEnd="16dp"
+                android:text="@string/harga"
+                android:textSize="16sp"
+                android:textColor="@color/main_blue"
+                android:textStyle="bold"
+                android:padding="8dp"/>
+
+            <TextView
+                android:text="@string/_10_000_00"
+                android:layout_weight="1"
+                android:padding="8dp"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_marginEnd="16dp"
+                android:text="@string/perjalanan"
+                android:textSize="16sp"
+                android:textColor="@color/main_blue"
+                android:textStyle="bold"
+                android:padding="8dp"/>
+
+            <TextView
+                android:text="@string/example_travel"
+                android:layout_weight="1"
+                android:padding="8dp"/>
+        </TableRow>
+    </TableLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,9 +4,13 @@
     android:id="@+id/card_view_history"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="24dp"
-    android:layout_marginBottom="16dp"
-    app:cardCornerRadius="16dp">
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginBottom="4dp"
+    app:cardCornerRadius="16dp"
+    android:padding="8dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    android:background="@android:color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

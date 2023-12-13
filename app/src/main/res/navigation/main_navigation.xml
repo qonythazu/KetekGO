@@ -10,9 +10,6 @@
         android:name="com.dicoding.ketekgo.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_destinationDetailFragment"
-            app:destination="@id/destinationDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookingFragment"

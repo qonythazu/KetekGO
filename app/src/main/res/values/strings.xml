@@ -64,4 +64,13 @@
     <string name="example_description">Pulau yang sangat indah. Menawarkan berbagai macam views yang aestetik coy</string>
     <string name="example_location">Sebelah barat dari Pulau Utama</string>
     <string name="example_travel">Perjalanan menggunakan perahu Ketek, sekitar 30 menit dari Pulau Utama</string>
+    <string name="home">Beranda</string>
+    <string name="booking">Booking</string>
+    <string name="history">Riwayat</string>
+    <string name="profile">Profil</string>
+    <string name="floating_button">floating_button</string>
+    <string name="more">MORE</string>
+    <string name="input_your_preferences">Input Your Preferences</string>
+    <string name="ask">ASK</string>
+    <string name="our_recommendation">Our Recommendation</string>
 </resources>
