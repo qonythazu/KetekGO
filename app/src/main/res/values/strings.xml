@@ -73,4 +73,5 @@
     <string name="input_your_preferences">Input Your Preferences</string>
     <string name="ask">ASK</string>
     <string name="our_recommendation">Our Recommendation</string>
+    <string name="rate_this_destination">Rate This Destination?</string>
 </resources>
