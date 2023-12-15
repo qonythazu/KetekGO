@@ -2,6 +2,7 @@ package com.dicoding.ketekgo.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.ketekgo.R
@@ -20,5 +21,12 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navView.setupWithNavController(navController)
+    }
+    fun hideBottomNavigationBar() {
+        binding.bottomNav.visibility = View.GONE
+    }
+
+    fun showBottomNavigationBar() {
+        binding.bottomNav.visibility = View.VISIBLE
     }
 }

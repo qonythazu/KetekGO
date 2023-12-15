@@ -6,6 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.DestinationGridFragment">
 
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="14dp"
+        android:src="@drawable/ic_back"
+        android:contentDescription="@string/btnback"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <TextView
         android:id="@+id/tv_what_is_in_palembang"
         android:layout_width="wrap_content"
@@ -15,8 +25,7 @@
         android:textStyle="bold"
         android:text="@string/what_is_in_palembang"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/btn_back"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_destination"
@@ -35,6 +44,7 @@
         android:src="@drawable/ic_add"
         android:contentDescription="@string/floating_button"
         android:backgroundTint="@color/main_blue"
+        android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
