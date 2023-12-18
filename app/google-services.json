@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "721991455565",
+    "project_id": "ketekgo",
+    "storage_bucket": "ketekgo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721991455565:android:627ab1512fe9f2e5d85d04",
+        "android_client_info": {
+          "package_name": "com.dicoding.ketekgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "721991455565-k414rsi4hp0tphgubk2lq84lcq6e0fgr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dicoding.ketekgo",
+            "certificate_hash": "26665aed696582db702060ca1c39e41bb8a2f87c"
+          }
+        },
+        {
+          "client_id": "721991455565-j74jqp2aornnd98snkje4jd26q1vs8ab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9HGLaD3M2VPeZHERGjWpsT-F90x1O7I4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "721991455565-j74jqp2aornnd98snkje4jd26q1vs8ab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -76,7 +76,7 @@
     <string name="rate_this_destination">Rate This Destination?</string>
     <string name="btnback">btnBack</string>
     <string name="error_message">Error</string>
-
+    <string name="log_out">LOGOUT</string>
 
     // DUMMY DATA FOR BOATS//
     <string-array name="data_username">
