@@ -6,14 +6,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.activity.MainActivity
+import com.dicoding.ketekgo.data.repository.Result
 import com.dicoding.ketekgo.databinding.FragmentLoginBinding
+import com.dicoding.ketekgo.isLoading
+import com.dicoding.ketekgo.viewmodel.AuthModel
+import com.dicoding.ketekgo.viewmodel.ViewModelFactory
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: AuthModel by activityViewModels {
+        ViewModelFactory.getInstance(requireActivity())
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,7 +39,28 @@ class LoginFragment : Fragment() {
         )
 
         val loginButton = binding.btnLogin
-        loginButton.setOnClickListener{moveMainActivity()}
+        loginButton.setOnClickListener{
+            val emailTxt = binding.edEmailLogin.text.toString()
+            val passwordTxt = binding.edPasswordLogin.text.toString()
+            viewModel.authLogin(emailTxt, passwordTxt).observe(requireActivity()) {result ->
+                when (result) {
+                    is Result.Loading -> {
+                        isLoading(true, binding.progressLogin)
+                    }
+                    is Result.Success -> {
+                        moveMainActivity()
+                    }
+                    is Result.Error -> {
+                        isLoading(false, binding.progressLogin)
+                        Toast.makeText(
+                            context,
+                            "${resources.getString(R.string.error_message)}, ${result.error}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
     }
 
     private fun moveMainActivity() {
