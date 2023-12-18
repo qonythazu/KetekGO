@@ -2,6 +2,7 @@ package com.dicoding.ketekgo.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,14 +41,18 @@ class LoginFragment : Fragment() {
 
         val loginButton = binding.btnLogin
         loginButton.setOnClickListener{
+            isLoading(true, binding.progressLogin)
+            Log.e("Login", "Button Clicked")
             val emailTxt = binding.edEmailLogin.text.toString()
             val passwordTxt = binding.edPasswordLogin.text.toString()
             viewModel.authLogin(emailTxt, passwordTxt).observe(requireActivity()) {result ->
                 when (result) {
                     is Result.Loading -> {
                         isLoading(true, binding.progressLogin)
+                        Log.e("Login", "Loading")
                     }
                     is Result.Success -> {
+                        Log.e("Login", "Success")
                         moveMainActivity()
                     }
                     is Result.Error -> {
@@ -57,6 +62,7 @@ class LoginFragment : Fragment() {
                             "${resources.getString(R.string.error_message)}, ${result.error}",
                             Toast.LENGTH_SHORT
                         ).show()
+                        Log.e("Login", result.error)
                     }
                 }
             }
