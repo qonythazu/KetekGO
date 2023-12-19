@@ -77,6 +77,10 @@
     <string name="btnback">btnBack</string>
     <string name="error_message">Error</string>
     <string name="log_out">LOGOUT</string>
+    <string name="full_name">Full Name</string>
+    <string name="register_as_driver">Register As Driver</string>
+    <string name="register_as_costumer">Register As Costumer</string>
+    <string name="order">Orderan</string>
 
     // DUMMY DATA FOR BOATS//
     <string-array name="data_username">

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/notificationFragment"
+        android:title="@string/order"
+        android:icon="@drawable/ic_booking"/>
+
+    <item
+        android:id="@+id/uploadFragment"
+        android:title="@string/upload"
+        android:icon="@drawable/ic_camera"/>
+
+    <item
+        android:id="@+id/profileDriverFragment"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_profile"/>
+
+</menu>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/driver_navigation"
+    app:startDestination="@id/notificationFragment">
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.dicoding.ketekgo.fragment.driver.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
+    <fragment
+        android:id="@+id/uploadFragment"
+        android:name="com.dicoding.ketekgo.fragment.driver.UploadFragment"
+        android:label="fragment_upload"
+        tools:layout="@layout/fragment_upload" />
+    <fragment
+        android:id="@+id/profileDriverFragment"
+        android:name="com.dicoding.ketekgo.fragment.driver.ProfileDriverFragment"
+        android:label="fragment_profile_driver"
+        tools:layout="@layout/fragment_profile_driver" />
+</navigation>

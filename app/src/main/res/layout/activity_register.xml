@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AuthActivity">
+    tools:context=".activity.RegisterActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/logo_app"
@@ -35,20 +35,34 @@
         app:layout_constraintTop_toBottomOf="@+id/logo_app" />
 
     <EditText
-        android:id="@+id/ed_email_login"
+        android:id="@+id/ed_full_name_register"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:hint="@string/full_name"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_or_sign_up"/>
+
+
+    <EditText
+        android:id="@+id/ed_email_register"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_or_sign_up" />
+        app:layout_constraintTop_toBottomOf="@+id/ed_full_name_register" />
 
     <EditText
-        android:id="@+id/ed_password_login"
+        android:id="@+id/ed_password_register"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginStart="32dp"
@@ -58,29 +72,43 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ed_email_login" />
+        app:layout_constraintTop_toBottomOf="@+id/ed_email_register" />
 
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ed_password_login" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btn_login_with_google"
+    <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ed_password_register">
+
+        <RadioButton
+            android:id="@+id/register_as_customer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_as_costumer"/>
+
+        <RadioButton
+            android:id="@+id/register_as_driver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="@string/register_as_driver"/>
+    </RadioGroup>
+
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_login"/>
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <TextView
         android:id="@+id/or"
@@ -90,14 +118,14 @@
         android:text="@string/or"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login_with_google" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_register" />
 
     <TextView
-        android:id="@+id/btn_register_here"
+        android:id="@+id/btn_login_here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/register_here"
+        android:text="@string/login_here"
         android:textColor="@color/main_blue"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,7 +133,7 @@
         app:layout_constraintTop_toBottomOf="@+id/or" />
 
     <ProgressBar
-        android:id="@+id/progress_login"
+        android:id="@+id/progress_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
