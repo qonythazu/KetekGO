@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
+import android.widget.RadioGroup
 import android.widget.Toast
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.checkField
@@ -17,6 +18,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var fReg: FirebaseAuth
     private lateinit var fStore: FirebaseFirestore
     private lateinit var binding: ActivityRegisterBinding
+    private var selectedRole: String = "1"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
@@ -31,6 +33,17 @@ class RegisterActivity : AppCompatActivity() {
         val fullName: EditText = binding.edFullNameRegister
         val email: EditText = binding.edEmailRegister
         val password: EditText = binding.edPasswordRegister
+        val radioGroup: RadioGroup = binding.radioGroup
+        radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.register_as_customer -> {
+                    selectedRole = "1"
+                }
+                R.id.register_as_driver -> {
+                    selectedRole = "2"
+                }
+            }
+        }
         val btnRegister = binding.btnRegister
 
         btnRegister.setOnClickListener{
@@ -45,11 +58,10 @@ class RegisterActivity : AppCompatActivity() {
                         userInfo["FullName"] = fullName.text.toString()
                         userInfo["Email"] = email.text.toString()
                         userInfo["Password"] = password.text.toString()
-                        // Specify if the user is a driver
-                        userInfo["Role"] = "1"
-
+                        // Specify if the user is a costumer or driver
+                        userInfo["Role"] = selectedRole
                         df.set(userInfo)
-                        startActivity(Intent(this@RegisterActivity, MainActivity::class.java))
+                        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                         finish()
                     }
                     .addOnFailureListener { e ->
