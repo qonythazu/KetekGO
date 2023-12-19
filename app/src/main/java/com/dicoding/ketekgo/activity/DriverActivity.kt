@@ -3,6 +3,7 @@ package com.dicoding.ketekgo.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.ketekgo.R
@@ -32,11 +33,12 @@ class DriverActivity : AppCompatActivity() {
             return
         }
 
-        val navView: BottomNavigationView = binding.bottomNav
+        val navView: BottomNavigationView = binding.bottomDriverNav
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_order_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         navView.setupWithNavController(navController)
+        Log.e("DriverActivity", "This is Driver Activity")
 
         binding.logoutText.setOnClickListener {
             signOut()
