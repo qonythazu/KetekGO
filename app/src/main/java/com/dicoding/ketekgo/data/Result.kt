@@ -1,4 +1,4 @@
-package com.dicoding.ketekgo.data.repository
+package com.dicoding.ketekgo.data
 
 sealed class Result<out R> private constructor() {
     data class Success<out T>(val data: T) : Result<T>()

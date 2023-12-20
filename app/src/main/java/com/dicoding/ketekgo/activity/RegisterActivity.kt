@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.checkField
 import com.dicoding.ketekgo.databinding.ActivityRegisterBinding
+import com.dicoding.ketekgo.isLoading
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
@@ -44,9 +45,11 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
         }
-        val btnRegister = binding.btnRegister
 
+        val btnRegister = binding.btnRegister
+        val loadingProgressBar = binding.progressRegister
         btnRegister.setOnClickListener{
+            isLoading(true, loadingProgressBar)
             // Registration Process
             if (checkField(fullName) && checkField(email) && checkField(password)) {
                 fReg.createUserWithEmailAndPassword(email.text.toString(), password.text.toString())
@@ -61,10 +64,12 @@ class RegisterActivity : AppCompatActivity() {
                         // Specify if the user is a costumer or driver
                         userInfo["Role"] = selectedRole
                         df.set(userInfo)
+                        isLoading(false, loadingProgressBar)
                         startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                         finish()
                     }
                     .addOnFailureListener { e ->
+                        isLoading(false, loadingProgressBar)
                         Toast.makeText(this, "Error creating account: $e", Toast.LENGTH_SHORT).show()
                     }
             }

@@ -16,10 +16,11 @@ import com.google.firebase.ktx.Firebase
 class DriverActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDriverBinding
     private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_driver)
 
+        // Inflate the binding layout
         binding = ActivityDriverBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -34,7 +35,8 @@ class DriverActivity : AppCompatActivity() {
         }
 
         val navView: BottomNavigationView = binding.bottomDriverNav
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_order_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_order_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
         navView.setupWithNavController(navController)
@@ -43,7 +45,6 @@ class DriverActivity : AppCompatActivity() {
         binding.logoutText.setOnClickListener {
             signOut()
         }
-
     }
 
     private fun signOut() {

@@ -4,6 +4,7 @@
         <!-- Primary Brand Color -->
         <item name="colorPrimary">@color/main_blue</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="Theme.KetekGo" parent="Base.Theme.KetekGo" />
