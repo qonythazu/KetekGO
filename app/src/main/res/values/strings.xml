@@ -81,6 +81,13 @@
     <string name="register_as_driver">Register As Driver</string>
     <string name="register_as_costumer">Register As Costumer</string>
     <string name="order">Orderan</string>
+    <string name="culinary">KULINER</string>
+    <string name="recreation">REKREASI</string>
+    <string name="what_do_you_prefer">what do you prefer?</string>
+    <string name="culture">BUDAYA</string>
+    <string name="shopping">BELANJA</string>
+    <string name="submit">SUBMIT</string>
+    <string name="skip">SKIP</string>
 
     // DUMMY DATA FOR BOATS//
     <string-array name="data_username">

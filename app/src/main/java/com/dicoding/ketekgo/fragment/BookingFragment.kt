@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.ketekgo.R
@@ -43,11 +43,12 @@ class BookingFragment : Fragment() {
         val dataFrom = resources.getStringArray(R.array.data_from)
         val dataTo = resources.getStringArray(R.array.data_to)
         val dataTime = resources.getStringArray(R.array.data_time)
-        val dataCapacity = resources.obtainTypedArray(R.array.data_capacity)
+        val dataCapacity = resources.getIntArray(R.array.data_capacity)
         val dataPrice = resources.getStringArray(R.array.data_price)
+
         val listKetek = ArrayList<Ketek>()
         for (i in dataUsername.indices) {
-            val ketek = Ketek(dataUsername[i], dataPhoto.getResourceId(i, -1), dataName[i], dataFrom[i], dataTo[i], dataTime[i], dataCapacity.getIndex(i), dataPrice[i])
+            val ketek = Ketek(dataUsername[i], dataPhoto.getResourceId(i, -1), dataName[i], dataFrom[i], dataTo[i], dataTime[i], dataCapacity[i], dataPrice[i])
             listKetek.add(ketek)
         }
         return listKetek
@@ -61,7 +62,10 @@ class BookingFragment : Fragment() {
             override fun onItemClick(position: Int) {
                 val selectedItem = list[position]
 
-                Navigation.createNavigateOnClickListener(R.id.action_bookingFragment_to_bookingDetailFragment)
+                val bundle = Bundle().apply {
+                    putParcelable(BookingDetailFragment.ITEM, selectedItem)
+                }
+                findNavController().navigate(R.id.action_bookingFragment_to_bookingDetailFragment, bundle)
             }
         })
 

@@ -22,8 +22,6 @@ class RegisterActivity : AppCompatActivity() {
     private var selectedRole: String = "1"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
