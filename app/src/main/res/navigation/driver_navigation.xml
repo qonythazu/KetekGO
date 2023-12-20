@@ -14,10 +14,19 @@
         android:id="@+id/uploadFragment"
         android:name="com.dicoding.ketekgo.fragment.driver.UploadFragment"
         android:label="fragment_upload"
-        tools:layout="@layout/fragment_upload" />
+        tools:layout="@layout/fragment_upload" >
+        <action
+            android:id="@+id/action_uploadFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileDriverFragment"
         android:name="com.dicoding.ketekgo.fragment.driver.ProfileDriverFragment"
         android:label="fragment_profile_driver"
         tools:layout="@layout/fragment_profile_driver" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.dicoding.ketekgo.fragment.driver.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" />
 </navigation>

@@ -88,6 +88,13 @@
     <string name="shopping">BELANJA</string>
     <string name="submit">SUBMIT</string>
     <string name="skip">SKIP</string>
+    <string name="switch_camera">switch camera</string>
+    <string name="arrow_back_button">arrow back button</string>
+    <string name="capture_image">capture image</string>
+    <string name="photo_failed">Photo Failed</string>
+    <string name="camera_failed">Camera Failed</string>
+    <string name="choose_picture">Choose Picture</string>
+    <string name="permission_not_granted">Permission Not Granted</string>
 
     // DUMMY DATA FOR BOATS//
     <string-array name="data_username">
