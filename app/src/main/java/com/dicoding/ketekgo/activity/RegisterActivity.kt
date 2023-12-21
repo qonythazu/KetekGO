@@ -54,17 +54,36 @@ class RegisterActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         val user: FirebaseUser? = fReg.currentUser
                         Toast.makeText(this, "Account Created", Toast.LENGTH_SHORT).show()
-                        val df: DocumentReference = fStore.collection("Users").document(user?.uid!!)
-                        val userInfo: MutableMap<String, Any> = HashMap()
-                        userInfo["FullName"] = fullName.text.toString()
-                        userInfo["Email"] = email.text.toString()
-                        userInfo["Password"] = password.text.toString()
-                        // Specify if the user is a costumer or driver
-                        userInfo["Role"] = selectedRole
-                        df.set(userInfo)
-                        isLoading(false, loadingProgressBar)
-                        startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                        finish()
+                        val df: DocumentReference
+                        when (selectedRole) {
+                            "1" -> {
+                                df = fStore.collection("Customers").document(user?.uid!!)
+                                val userInfo: MutableMap<String, Any> = HashMap()
+                                userInfo["FullName"] = fullName.text.toString()
+                                userInfo["Email"] = email.text.toString()
+                                userInfo["Password"] = password.text.toString()
+                                userInfo["Role"] = selectedRole
+                                df.set(userInfo)
+                                isLoading(false, loadingProgressBar)
+                                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                                finish()
+                            }
+                            "2" -> {
+                                df = fStore.collection("Drivers").document(user?.uid!!)
+                                val userInfo: MutableMap<String, Any> = HashMap()
+                                userInfo["FullName"] = fullName.text.toString()
+                                userInfo["Email"] = email.text.toString()
+                                userInfo["Password"] = password.text.toString()
+                                userInfo["Role"] = selectedRole
+                                df.set(userInfo)
+                                isLoading(false, loadingProgressBar)
+                                startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                                finish()
+                            }
+                            else -> {
+                                Toast.makeText(this, "Pilih Register Sebagai Apa Dulu", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                     .addOnFailureListener { e ->
                         isLoading(false, loadingProgressBar)

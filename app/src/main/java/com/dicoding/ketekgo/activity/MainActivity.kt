@@ -56,10 +56,23 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navView.setupWithNavController(navController)
+        navView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.bookingDetailFragment -> {
+                    hideBottomNavigationBar()
+                }
+
+                else -> {
+                    showBottomNavigationBar()
+                }
+            }
+        }
 
         binding.logoutText.setOnClickListener {
             signOut()
         }
+
     }
 
     fun hideBottomNavigationBar() {

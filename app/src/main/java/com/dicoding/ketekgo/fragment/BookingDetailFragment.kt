@@ -29,10 +29,6 @@ class BookingDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mainActivity = activity as? MainActivity
-
-        mainActivity?.hideBottomNavigationBar()
-
         val selectedItem: Ketek? = arguments?.getParcelable(ITEM)
 
         selectedItem?.let {
@@ -57,7 +53,6 @@ class BookingDetailFragment : Fragment() {
 
         binding.btnCancel.setOnClickListener {
             findNavController().navigateUp()
-            mainActivity?.showBottomNavigationBar()
         }
     }
 

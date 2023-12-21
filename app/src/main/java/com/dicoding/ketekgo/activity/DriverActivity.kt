@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -46,13 +47,37 @@ class DriverActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navView.setupWithNavController(navController)
-        Log.e("DriverActivity", "This is Driver Activity")
+        navView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.cameraFragment -> {
+                    hideBottomNavigationBar()
+                }
+
+                R.id.bookingDetailFragment -> {
+                    hideBottomNavigationBar()
+                }
+
+                else -> {
+                    showBottomNavigationBar()
+                }
+            }
+        }
 
         binding.logoutText.setOnClickListener {
             signOut()
         }
     }
 
+    private fun hideBottomNavigationBar() {
+        binding.bottomDriverNav.visibility = View.GONE
+        binding.toolbar.visibility = View.GONE
+    }
+
+    private fun showBottomNavigationBar() {
+        binding.bottomDriverNav.visibility = View.VISIBLE
+        binding.toolbar.visibility = View.VISIBLE
+    }
     private fun signOut() {
         auth.signOut()
         startActivity(Intent(this, LoginActivity::class.java))

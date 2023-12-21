@@ -66,6 +66,7 @@ class UploadFragment : Fragment() {
         binding?.btnCamera?.setOnClickListener { startCameraX() }
         binding?.btnGallery?.setOnClickListener { startGallery() }
         binding?.btnUpload?.setOnClickListener {
+            isLoading(true, binding?.progressUpload!!)
             val name = nameEditText?.text.toString()
             val capacity = capacityEditText?.text.toString().toInt()
             val price = priceEditText?.text.toString()
@@ -225,16 +226,16 @@ class UploadFragment : Fragment() {
                 "Time" to time
             )
 
-            db.collection("Users").document(userId)
+            db.collection("Drivers").document(userId)
                 .collection("Keteks")
                 .add(ketekData)
                 .addOnSuccessListener {
-                    // Berhasil mengunggah gambar dan data ke Firestore
                     Toast.makeText(
                         requireContext(),
                         "Data and image uploaded successfully",
                         Toast.LENGTH_SHORT
                     ).show()
+                    isLoading(false, binding?.progressUpload!!)
                 }
                 .addOnFailureListener { e: Exception ->
                     // Gagal menyimpan data ke Firestore
@@ -243,6 +244,7 @@ class UploadFragment : Fragment() {
                         "Failed to save data to Firestore: $e",
                         Toast.LENGTH_SHORT
                     ).show()
+                    isLoading(false, binding?.progressUpload!!)
                 }
         }
     }

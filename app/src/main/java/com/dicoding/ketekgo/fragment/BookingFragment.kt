@@ -1,6 +1,7 @@
 package com.dicoding.ketekgo.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,25 +40,45 @@ class BookingFragment : Fragment() {
     }
 
     private fun getListKetek() {
-        fStore.collection("Keteks").get()
-            .addOnSuccessListener { result ->
+        fStore.collection("Drivers").get()
+            .addOnSuccessListener { driverResult ->
                 val listKetek = ArrayList<Ketek>()
-                for (document in result) {
-                    val username = document.getString("IDUser")
-                    val photo = document.getString("PhotoURL")
-                    val name = document.getString("Name")
-                    val placeStart = document.getString("PlaceStart")
-                    val placeEnd = document.getString("PlaceEnd")
-                    val time = document.getString("Time")
-                    val capacity = document.getLong("Capacity")?.toInt()
-                    val price = document.getString("Price")
 
-                    val ketek = Ketek(username, photo, name, placeStart, placeEnd, time, capacity, price)
-                    listKetek.add(ketek)
+                for (driverDocument in driverResult) {
+                    // Mendapatkan ID dokumen driver
+                    val driverDocumentId = driverDocument.id
+
+                    // Mengakses koleksi "Keteks" di dalam dokumen driver
+                    fStore.collection("Drivers").document(driverDocumentId)
+                        .collection("Keteks").get()
+                        .addOnSuccessListener { keteksResult ->
+                            for (ketekDocument in keteksResult) {
+                                val username = ketekDocument.getString("IDUser")
+                                val photo = ketekDocument.getString("PhotoURL")
+                                val name = ketekDocument.getString("Name")
+                                val placeStart = ketekDocument.getString("PlaceStart")
+                                val placeEnd = ketekDocument.getString("PlaceEnd")
+                                val time = ketekDocument.getString("Time")
+                                val capacity = ketekDocument.getLong("Capacity")?.toInt()
+                                val price = ketekDocument.getString("Price")
+
+                                val ketek = Ketek(username, photo, name, placeStart, placeEnd, time, capacity, price)
+                                listKetek.add(ketek)
+                            }
+                            showRecycleList(listKetek)
+                        }
+                        .addOnFailureListener { e ->
+                            // Handle failure ketika mengakses koleksi "Keteks" di dalam dokumen driver
+                            Log.e("TAG", "Error getting Keteks documents: $e")
+                        }
                 }
-                showRecycleList(listKetek)
+            }
+            .addOnFailureListener { e ->
+                // Handle failure ketika mengakses koleksi "Drivers"
+                Log.e("TAG", "Error getting Drivers documents: $e")
             }
     }
+
 
     private fun showRecycleList(listKetek: ArrayList<Ketek>) {
         rvKetek.layoutManager = LinearLayoutManager(requireContext())

@@ -38,7 +38,7 @@ class ProfileDriverFragment : Fragment() {
     private fun setupProfile(){
         viewModel.getUserId().observe(viewLifecycleOwner) {userId ->
             val db = FirebaseFirestore.getInstance()
-            val userRef = db.collection("Users").document(userId)
+            val userRef = db.collection("Drivers").document(userId)
 
             userRef.get().addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {

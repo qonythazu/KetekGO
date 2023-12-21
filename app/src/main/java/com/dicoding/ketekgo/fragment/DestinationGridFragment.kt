@@ -34,17 +34,12 @@ class DestinationGridFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mainActivity = activity as? MainActivity
-
-        mainActivity?.hideBottomNavigationBar()
-
         binding.floatingButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.action_destinationGridFragment_to_destinationInputPreferenceFragment)
         )
 
         binding.btnBack.setOnClickListener{
             findNavController().navigateUp()
-            mainActivity?.showBottomNavigationBar()
         }
 
         val floatingActionButton: FloatingActionButton = binding.floatingButton

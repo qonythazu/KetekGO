@@ -58,20 +58,30 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkUser(uid: String) {
-        val df: DocumentReference = fStore.collection("Users").document(uid)
-        df.get().addOnSuccessListener { dc ->
-            Log.e("TAG", "onSuccess : ${dc.data}")
-            val role = dc.getString("Role")?.toLong()
+        Log.e("UID", uid)
+        val driverCollection = fStore.collection("Drivers").document(uid)
+        val customerCollection = fStore.collection("Customers").document(uid)
 
-            if (role == 1L) {
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                finish()
-            } else if (role == 2L) {
+        driverCollection.get().addOnSuccessListener { driverDoc ->
+            if (driverDoc.exists()) {
+                Log.e("Driver", "Login")
                 startActivity(Intent(this@LoginActivity, DriverActivity::class.java))
                 finish()
+            } else {
+                customerCollection.get().addOnSuccessListener { customerDoc ->
+                    if (customerDoc.exists()) {
+                        Log.e("Customer", "Login")
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
+                    } else {
+                        Log.e("TAG", "User not found in Driver or Customer collection")
+                    }
+                }.addOnFailureListener { e ->
+                    Log.e("TAG", "Error checking in Customer collection: $e")
+                }
             }
         }.addOnFailureListener { e ->
-            Log.e("TAG", "onFailure: $e")
+            Log.e("TAG", "Error checking in Driver collection: $e")
         }
     }
 
