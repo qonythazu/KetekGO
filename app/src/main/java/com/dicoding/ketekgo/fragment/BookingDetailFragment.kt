@@ -103,9 +103,9 @@ class BookingDetailFragment : Fragment() {
     private fun saveBookingToFirestore(booking: Booking, status: String, date: String) {
         fStore = FirebaseFirestore.getInstance()
         val userId = FirebaseAuth.getInstance().currentUser?.uid
+
         if (userId != null) {
             val customerRef = fStore.collection("Customers").document(userId)
-
             val bookingsRef = customerRef.collection("Bookings")
 
             val bookingData = mapOf(
@@ -119,23 +119,67 @@ class BookingDetailFragment : Fragment() {
             )
 
             bookingsRef.add(bookingData)
-                .addOnSuccessListener {
-                    isLoading(false, binding.progressBarBooking)
-                    findNavController().navigate(R.id.historyFragment)
-                    Toast.makeText(requireContext(), "Succes Booking", Toast.LENGTH_SHORT).show()
+                .addOnSuccessListener { documentReference ->
+                    val bookingId = documentReference.id
+
+                    val ketekId = booking.ketekId
+                    val ketekRef = fStore.collection("Keteks").document(ketekId)
+
+                    ketekRef.get()
+                        .addOnSuccessListener { ketekSnapshot ->
+                            val driverId = ketekSnapshot.getString("driverId")
+
+                            if (driverId != null) {
+                                // Menambahkan data ke koleksi "History" pada akun Driver
+                                val driverRef = fStore.collection("Drivers").document(driverId)
+                                val historyRef = driverRef.collection("History")
+
+                                val historyData = mapOf(
+                                    "customerId" to userId,
+                                    "customerName" to booking.name,
+                                    "driverId" to driverId,
+                                    "ketekId" to ketekId,
+                                    "ketekName" to booking.name, // Menggunakan name dari booking, sesuaikan jika perlu
+                                    "ketekDestination" to booking.destination,
+                                    "ketekTime" to booking.time,
+                                    "bookingId" to bookingId,
+                                    "totalPrice" to booking.totalPrice,
+                                    "date" to date
+                                )
+
+                                historyRef.add(historyData)
+                                    .addOnSuccessListener {
+                                        isLoading(false, binding.progressBarBooking)
+                                        findNavController().navigate(R.id.historyFragment)
+                                        Toast.makeText(requireContext(), "Success Booking", Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener { e ->
+                                        isLoading(false, binding.progressBarBooking)
+                                        Toast.makeText(requireContext(), "Error: $e", Toast.LENGTH_SHORT).show()
+                                    }
+                            } else {
+                                isLoading(false, binding.progressBarBooking)
+                                Toast.makeText(requireContext(), "Driver not found", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        .addOnFailureListener { e ->
+                            isLoading(false, binding.progressBarBooking)
+                            Toast.makeText(requireContext(), "Error: $e", Toast.LENGTH_SHORT).show()
+                        }
                 }
                 .addOnFailureListener { e ->
                     isLoading(false, binding.progressBarBooking)
-                    Toast.makeText(requireContext(), "$e", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error: $e", Toast.LENGTH_SHORT).show()
                 }
         }
     }
+
 
     private fun showDialog() {
         isLoading(true, binding.progressBarBooking)
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("Confirmation")
-        builder.setMessage("Are you sure you want to proceed with this booking?")
+        builder.setMessage("Yakin Nih Mau Booking Ketek Ini?")
 
         builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
@@ -149,7 +193,6 @@ class BookingDetailFragment : Fragment() {
             val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
             val booking = Booking(name, destination, time, passengers, cleanPrice)
-
             saveBookingToFirestore(booking, status, date)
         }
 
