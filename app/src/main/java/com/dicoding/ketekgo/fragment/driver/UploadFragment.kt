@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -25,9 +26,16 @@ import com.dicoding.ketekgo.rotateBitmap
 import com.dicoding.ketekgo.uriToFile
 import com.dicoding.ketekgo.viewmodel.UserViewModel
 import com.dicoding.ketekgo.viewmodel.ViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
 class UploadFragment : Fragment() {
+    private val storage = FirebaseStorage.getInstance()
+    private val storageReference = storage.reference
+    private val db = FirebaseFirestore.getInstance()
+
     private var _binding: FragmentUploadBinding? = null
     private val binding get() = _binding
     private var getFile: File? = null
@@ -40,16 +48,33 @@ class UploadFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_upload, container, false)
+        _binding = FragmentUploadBinding.inflate(layoutInflater, container, false)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val nameEditText: EditText? = binding?.edNameKetek
+        val capacityEditText: EditText? = binding?.edCapacity
+        val priceEditText: EditText? = binding?.edPrice
+        val placeStartEditText: EditText? = binding?.edPlaceStart
+        val placeEndEditText : EditText? = binding?.edPlaceEnd
+        val timeEditText: EditText? = binding?.edTime
+
         isLoading(false, binding?.progressUpload!!)
         binding?.btnCamera?.setOnClickListener { startCameraX() }
         binding?.btnGallery?.setOnClickListener { startGallery() }
-        binding?.btnUpload?.setOnClickListener { uploadImage() }
+        binding?.btnUpload?.setOnClickListener {
+            val name = nameEditText?.text.toString()
+            val capacity = capacityEditText?.text.toString().toInt()
+            val price = priceEditText?.text.toString()
+            val placeStart = placeStartEditText?.text.toString()
+            val placeEnd = placeEndEditText?.text.toString()
+            val time = timeEditText?.text.toString()
+
+            uploadImageToStorage(name, capacity, price, placeStart, placeEnd, time)
+        }
 
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
@@ -74,10 +99,6 @@ class UploadFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun uploadImage() {
-        TODO("Not yet implemented")
     }
 
     private fun startCameraX() {
@@ -142,6 +163,90 @@ class UploadFragment : Fragment() {
         }
     }
 
+    private fun uploadImageToStorage(
+        name: String,
+        capacity: Int,
+        price: String,
+        placeStart: String,
+        placeEnd: String,
+        time: String
+    ) {
+        if (getFile != null) {
+            val imageRef = storageReference.child("images/${getFile?.name}")
+
+            val uploadTask = imageRef.putFile(Uri.fromFile(getFile))
+
+            uploadTask.addOnSuccessListener { taskSnapshot ->
+                imageRef.downloadUrl.addOnSuccessListener { uri ->
+                    // Setelah mendapatkan URL gambar, simpan data ke Firestore
+                    saveDataToFirestore(
+                        name,
+                        uri.toString(),
+                        capacity,
+                        price,
+                        placeStart,
+                        placeEnd,
+                        time
+                    )
+                }
+            }.addOnFailureListener { e ->
+                // Gagal mengunggah gambar
+                Toast.makeText(
+                    requireContext(),
+                    "Failed to upload image to Firebase Storage: $e",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        } else {
+            // File gambar tidak ditemukan
+            Toast.makeText(requireContext(), "Image file not found", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun saveDataToFirestore(
+        name: String,
+        photoUrl: String,
+        capacity: Int,
+        price: String,
+        placeStart: String,
+        placeEnd: String,
+        time: String
+    ) {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        userId?.let {
+            val ketekData = hashMapOf(
+                "Name" to name,
+                "PhotoUrl" to photoUrl,
+                "Capacity" to capacity,
+                "Price" to price,
+                "PlaceStart" to placeStart,
+                "PlaceEnd" to placeEnd,
+                "Time" to time
+            )
+
+            db.collection("Users").document(userId)
+                .collection("Keteks")
+                .add(ketekData)
+                .addOnSuccessListener {
+                    // Berhasil mengunggah gambar dan data ke Firestore
+                    Toast.makeText(
+                        requireContext(),
+                        "Data and image uploaded successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .addOnFailureListener { e: Exception ->
+                    // Gagal menyimpan data ke Firestore
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to save data to Firestore: $e",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
+    }
+
     private fun handleSelectedImage(selectedImg: Uri) {
         val myFile = uriToFile(selectedImg, requireContext())
         getFile = myFile
@@ -159,6 +264,11 @@ class UploadFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

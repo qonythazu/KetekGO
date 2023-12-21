@@ -95,6 +95,8 @@
     <string name="camera_failed">Camera Failed</string>
     <string name="choose_picture">Choose Picture</string>
     <string name="permission_not_granted">Permission Not Granted</string>
+    <string name="name_ketek">Nama Ketek</string>
+    <string name="from">Asal</string>
 
     // DUMMY DATA FOR BOATS//
     <string-array name="data_username">

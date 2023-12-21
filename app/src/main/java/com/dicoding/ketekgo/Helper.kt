@@ -112,3 +112,4 @@ fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
         )
     }
 }
+

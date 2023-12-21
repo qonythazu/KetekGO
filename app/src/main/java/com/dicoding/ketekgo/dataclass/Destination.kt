@@ -1,4 +1,4 @@
-package com.dicoding.ketekgo.dummydata
+package com.dicoding.ketekgo.dataclass
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

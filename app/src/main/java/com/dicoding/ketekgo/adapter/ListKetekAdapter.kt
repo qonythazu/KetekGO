@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.dicoding.ketekgo.R
-import com.dicoding.ketekgo.dummydata.Ketek
+import com.dicoding.ketekgo.dataclass.Ketek
 
 class ListKetekAdapter(private val listKetek: ArrayList<Ketek>) : RecyclerView.Adapter<ListKetekAdapter.ListViewHolder>() {
     interface OnItemClickListener {
@@ -46,7 +47,9 @@ class ListKetekAdapter(private val listKetek: ArrayList<Ketek>) : RecyclerView.A
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val (username, photo, name, from, to, time, capacity, price) = listKetek[position]
         holder.tvItemProfileName.text = username
-        holder.imgPhoto.setImageResource(photo)
+        Glide.with(holder.itemView.context)
+            .load(photo)
+            .into(holder.imgPhoto)
         holder.tvItemKetekName.text = name
         holder.tvItemKetekFrom.text = from
         holder.tvItemKetekTo.text = to

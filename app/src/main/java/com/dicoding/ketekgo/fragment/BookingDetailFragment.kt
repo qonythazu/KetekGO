@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.dicoding.ketekgo.activity.MainActivity
 import com.dicoding.ketekgo.databinding.FragmentBookingDetailBinding
-import com.dicoding.ketekgo.dummydata.Ketek
+import com.dicoding.ketekgo.dataclass.Ketek
 
 class BookingDetailFragment : Fragment() {
     private var _binding: FragmentBookingDetailBinding? = null
@@ -37,7 +37,7 @@ class BookingDetailFragment : Fragment() {
 
         selectedItem?.let {
             setDisplay(it)
-            basePrice = it.price
+            basePrice = it.price.toString()
         }
 
         binding.edPassengers.addTextChangedListener(object : TextWatcher {
@@ -69,9 +69,9 @@ class BookingDetailFragment : Fragment() {
             Editable.Factory.getInstance().newEditable(item.capacity.toString())
 
         val price = item.price
-        val priceString = price.replace(".", "").toInt()
-        val totalPrice = priceString * item.capacity
-        binding.btnPay.text = formatToRupiah(totalPrice)
+        val priceString = price?.replace(".", "")?.toInt()
+        val totalPrice = priceString?.times(item.capacity!!)
+        binding.btnPay.text = totalPrice?.let { formatToRupiah(it) }
     }
 
     private fun formatToRupiah(value: Int): String {

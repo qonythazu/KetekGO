@@ -67,6 +67,7 @@ dependencies {
     implementation("androidx.camera:camera-camera2:1.4.0-alpha03")
     implementation("androidx.camera:camera-lifecycle:1.4.0-alpha03")
     implementation("androidx.camera:camera-view:1.4.0-alpha03")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -74,4 +75,7 @@ dependencies {
 
     //room
     implementation("androidx.room:room-ktx:2.6.1")
+
+    //glide
+    implementation("com.github.bumptech.glide:glide:4.13.2")
 }

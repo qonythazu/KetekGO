@@ -6,18 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.adapter.ListDestinationAdapter
 import com.dicoding.ketekgo.adapter.ListKetekAdapter
 import com.dicoding.ketekgo.databinding.FragmentHomeBinding
-import com.dicoding.ketekgo.dummydata.Destination
-import com.dicoding.ketekgo.dummydata.Ketek
+import com.dicoding.ketekgo.dataclass.Destination
+import com.dicoding.ketekgo.dataclass.Ketek
+import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
+    private lateinit var fStore: FirebaseFirestore
     private lateinit var rvKetek: RecyclerView
-    private val listKetek = ArrayList<Ketek>()
 
     private lateinit var rvDestination: RecyclerView
     private val listDestination = ArrayList<Destination>()
@@ -39,11 +41,12 @@ class HomeFragment : Fragment() {
             Navigation.createNavigateOnClickListener(R.id.action_homeFragment_to_destinationGridFragment)
         )
 
+        fStore = FirebaseFirestore.getInstance()
+
         rvKetek = binding.rvKetek
         rvKetek.setHasFixedSize(true)
 
-        listKetek.addAll(getListKetek())
-        showRecycleListKetek()
+        getListKetek()
 
         rvDestination = binding.rvDestination
         rvDestination.setHasFixedSize(true)
@@ -52,21 +55,43 @@ class HomeFragment : Fragment() {
         showRecycleDestination()
     }
 
-    private fun getListKetek(): ArrayList<Ketek> {
-        val dataUsername = resources.getStringArray(R.array.data_username)
-        val dataPhoto = resources.obtainTypedArray(R.array.data_photo)
-        val dataName = resources.getStringArray(R.array.data_name)
-        val dataFrom = resources.getStringArray(R.array.data_from)
-        val dataTo = resources.getStringArray(R.array.data_to)
-        val dataTime = resources.getStringArray(R.array.data_time)
-        val dataCapacity = resources.obtainTypedArray(R.array.data_capacity)
-        val dataPrice = resources.getStringArray(R.array.data_price)
-        val listKetek = ArrayList<Ketek>()
-        for (i in dataUsername.indices) {
-            val ketek = Ketek(dataUsername[i], dataPhoto.getResourceId(i, -1), dataName[i], dataFrom[i], dataTo[i], dataTime[i], dataCapacity.getIndex(i), dataPrice[i])
-            listKetek.add(ketek)
-        }
-        return listKetek
+    private fun getListKetek() {
+        fStore.collection("Keteks").get()
+            .addOnSuccessListener { result ->
+                val listKetek = ArrayList<Ketek>()
+                for (document in result) {
+                    val username = document.getString("IDUser")
+                    val photo = document.getString("PhotoURL")
+                    val name = document.getString("Name")
+                    val placeStart = document.getString("PlaceStart")
+                    val placeEnd = document.getString("PlaceEnd")
+                    val time = document.getString("Time")
+                    val capacity = document.getLong("Capacity")?.toInt()
+                    val price = document.getString("Price")
+
+                    val ketek = Ketek(username, photo, name, placeStart, placeEnd, time, capacity, price)
+                    listKetek.add(ketek)
+                }
+                showRecycleList(listKetek)
+            }
+    }
+
+    private fun showRecycleList(listKetek: ArrayList<Ketek>) {
+        rvKetek.layoutManager = LinearLayoutManager(requireContext())
+        val listKetekAdapter = ListKetekAdapter(listKetek)
+
+        listKetekAdapter.setOnItemClickListener(object : ListKetekAdapter.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val selectedItem = listKetek[position]
+
+                val bundle = Bundle().apply {
+                    putParcelable(BookingDetailFragment.ITEM, selectedItem)
+                }
+                findNavController().navigate(R.id.action_homeFragment_to_bookingDetailFragment, bundle)
+            }
+        })
+
+        rvKetek.adapter = listKetekAdapter
     }
 
     private fun getListDestination(): ArrayList<Destination> {
@@ -78,12 +103,6 @@ class HomeFragment : Fragment() {
             listDestination.add(destination)
         }
         return listDestination
-    }
-
-    private fun showRecycleListKetek() {
-        rvKetek.layoutManager = LinearLayoutManager(requireContext())
-        val listKetekAdapter = ListKetekAdapter(listKetek)
-        rvKetek.adapter = listKetekAdapter
     }
 
     private fun showRecycleDestination() {

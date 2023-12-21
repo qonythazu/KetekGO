@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.activity.MainActivity
 import com.dicoding.ketekgo.adapter.ListDestinationAdapter
 import com.dicoding.ketekgo.databinding.FragmentDestinationGridBinding
-import com.dicoding.ketekgo.dummydata.Destination
+import com.dicoding.ketekgo.dataclass.Destination
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DestinationGridFragment : Fragment() {

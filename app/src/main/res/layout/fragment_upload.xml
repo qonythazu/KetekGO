@@ -17,6 +17,18 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
+        android:id="@+id/ed_name_ketek"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="@string/name_ketek"
+        android:inputType="text"
+        android:layout_marginHorizontal="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/img_uploaded"/>
+
+    <EditText
         android:id="@+id/ed_capacity"
         android:layout_width="match_parent"
         android:layout_height="48dp"
@@ -26,14 +38,14 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_uploaded"/>
+        app:layout_constraintTop_toBottomOf="@id/ed_name_ketek"/>
 
     <EditText
         android:id="@+id/ed_price"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:hint="@string/price"
-        android:inputType="number"
+        android:inputType="text"
         android:layout_marginHorizontal="56dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,10 +53,10 @@
         app:layout_constraintTop_toBottomOf="@id/ed_capacity"/>
     
     <EditText
-        android:id="@+id/ed_destination"
+        android:id="@+id/ed_place_start"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="@string/destination"
+        android:hint="@string/from"
         android:inputType="text"
         android:layout_marginHorizontal="56dp"
         android:layout_marginTop="16dp"
@@ -53,16 +65,28 @@
         app:layout_constraintTop_toBottomOf="@id/ed_price"/>
 
     <EditText
-        android:id="@+id/ed_time"
+        android:id="@+id/ed_place_end"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="@string/time"
-        android:inputType="time"
+        android:hint="@string/to"
+        android:inputType="text"
         android:layout_marginHorizontal="56dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ed_destination"/>
+        app:layout_constraintTop_toBottomOf="@id/ed_place_start"/>
+
+    <EditText
+        android:id="@+id/ed_time"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="@string/time"
+        android:inputType="text"
+        android:layout_marginHorizontal="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ed_place_end"/>
 
     <Button
         android:id="@+id/btn_gallery"

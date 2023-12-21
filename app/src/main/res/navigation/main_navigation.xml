@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_destinationGridFragment"
             app:destination="@id/destinationGridFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_bookingDetailFragment"
+            app:destination="@id/bookingDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookingFragment"

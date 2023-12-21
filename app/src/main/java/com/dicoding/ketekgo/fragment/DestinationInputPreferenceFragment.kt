@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.adapter.ListDestinationAdapter
 import com.dicoding.ketekgo.databinding.FragmentDestinationInputPreferenceBinding
-import com.dicoding.ketekgo.dummydata.Destination
+import com.dicoding.ketekgo.dataclass.Destination
 
 class DestinationInputPreferenceFragment : Fragment() {
     private lateinit var rvDestination: RecyclerView

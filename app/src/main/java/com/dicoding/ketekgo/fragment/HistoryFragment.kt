@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.adapter.ListHistoryAdapter
 import com.dicoding.ketekgo.databinding.FragmentHistoryBinding
-import com.dicoding.ketekgo.dummydata.History
+import com.dicoding.ketekgo.dataclass.History
 
 class HistoryFragment : Fragment() {
     private lateinit var rvHistory: RecyclerView
