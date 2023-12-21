@@ -45,16 +45,14 @@ class BookingFragment : Fragment() {
                 val listKetek = ArrayList<Ketek>()
 
                 for (driverDocument in driverResult) {
-                    // Mendapatkan ID dokumen driver
                     val driverDocumentId = driverDocument.id
 
-                    // Mengakses koleksi "Keteks" di dalam dokumen driver
                     fStore.collection("Drivers").document(driverDocumentId)
                         .collection("Keteks").get()
                         .addOnSuccessListener { keteksResult ->
                             for (ketekDocument in keteksResult) {
                                 val username = ketekDocument.getString("IDUser")
-                                val photo = ketekDocument.getString("PhotoURL")
+                                val photo = ketekDocument.getString("PhotoUrl")
                                 val name = ketekDocument.getString("Name")
                                 val placeStart = ketekDocument.getString("PlaceStart")
                                 val placeEnd = ketekDocument.getString("PlaceEnd")
@@ -68,13 +66,11 @@ class BookingFragment : Fragment() {
                             showRecycleList(listKetek)
                         }
                         .addOnFailureListener { e ->
-                            // Handle failure ketika mengakses koleksi "Keteks" di dalam dokumen driver
                             Log.e("TAG", "Error getting Keteks documents: $e")
                         }
                 }
             }
             .addOnFailureListener { e ->
-                // Handle failure ketika mengakses koleksi "Drivers"
                 Log.e("TAG", "Error getting Drivers documents: $e")
             }
     }

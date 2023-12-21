@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
                         .addOnSuccessListener { keteksResult ->
                             for (ketekDocument in keteksResult) {
                                 val username = ketekDocument.getString("IDUser")
-                                val photo = ketekDocument.getString("PhotoURL")
+                                val photo = ketekDocument.getString("PhotoUrl")
                                 val name = ketekDocument.getString("Name")
                                 val placeStart = ketekDocument.getString("PlaceStart")
                                 val placeEnd = ketekDocument.getString("PlaceEnd")
@@ -85,13 +85,11 @@ class HomeFragment : Fragment() {
                             showRecycleList(listKetek)
                         }
                         .addOnFailureListener { e ->
-                            // Handle failure ketika mengakses koleksi "Keteks" di dalam dokumen driver
                             Log.e("TAG", "Error getting Keteks documents: $e")
                         }
                 }
             }
             .addOnFailureListener { e ->
-                // Handle failure ketika mengakses koleksi "Drivers"
                 Log.e("TAG", "Error getting Drivers documents: $e")
             }
     }

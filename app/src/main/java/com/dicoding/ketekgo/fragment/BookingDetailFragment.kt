@@ -1,19 +1,29 @@
 package com.dicoding.ketekgo.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.dicoding.ketekgo.activity.MainActivity
+import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.databinding.FragmentBookingDetailBinding
+import com.dicoding.ketekgo.dataclass.Booking
 import com.dicoding.ketekgo.dataclass.Ketek
+import com.dicoding.ketekgo.isLoading
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class BookingDetailFragment : Fragment() {
+    private lateinit var fStore: FirebaseFirestore
     private var _binding: FragmentBookingDetailBinding? = null
     private val binding get() = _binding!!
     private var basePrice = ""
@@ -48,11 +58,14 @@ class BookingDetailFragment : Fragment() {
                 val priceInteger = enteredText?.split(".")?.firstOrNull()?.toIntOrNull() ?: 0
                 changeButtonPrice(priceInteger)
             }
-
         })
 
         binding.btnCancel.setOnClickListener {
             findNavController().navigateUp()
+        }
+
+        binding.btnPay.setOnClickListener {
+            showDialog()
         }
     }
 
@@ -85,6 +98,68 @@ class BookingDetailFragment : Fragment() {
         Log.e("PriceString", "$priceString")
         val totalPrice = priceString * value
         binding.btnPay.text = formatToRupiah(totalPrice)
+    }
+
+    private fun saveBookingToFirestore(booking: Booking, status: String, date: String) {
+        fStore = FirebaseFirestore.getInstance()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId != null) {
+            val customerRef = fStore.collection("Customers").document(userId)
+
+            val bookingsRef = customerRef.collection("Bookings")
+
+            val bookingData = mapOf(
+                "name" to booking.name,
+                "destination" to booking.destination,
+                "time" to booking.time,
+                "passengers" to booking.passengers,
+                "totalPrice" to booking.totalPrice,
+                "status" to status,
+                "date" to date
+            )
+
+            bookingsRef.add(bookingData)
+                .addOnSuccessListener {
+                    isLoading(false, binding.progressBarBooking)
+                    findNavController().navigate(R.id.historyFragment)
+                    Toast.makeText(requireContext(), "Succes Booking", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    isLoading(false, binding.progressBarBooking)
+                    Toast.makeText(requireContext(), "$e", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun showDialog() {
+        isLoading(true, binding.progressBarBooking)
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Confirmation")
+        builder.setMessage("Are you sure you want to proceed with this booking?")
+
+        builder.setPositiveButton("Yes") { dialog, _ ->
+            dialog.dismiss()
+            val name = binding.tvItemKetekName.text.toString()
+            val destination = binding.ketekTo.text.toString()
+            val time = binding.tvTime.text.toString()
+            val passengers = binding.edPassengers.text.toString().toInt()
+            val rawPrice = binding.btnPay.text.toString().replace("[Rp,]".toRegex(), "")
+            val cleanPrice = rawPrice.replace(".", "").toInt()
+            val status = "Belum dibayar"
+            val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+
+            val booking = Booking(name, destination, time, passengers, cleanPrice)
+
+            saveBookingToFirestore(booking, status, date)
+        }
+
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            isLoading(false, binding.progressBarBooking)
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     companion object {
