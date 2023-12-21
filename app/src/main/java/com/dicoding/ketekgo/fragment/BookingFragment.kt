@@ -1,5 +1,6 @@
 package com.dicoding.ketekgo.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -36,22 +37,23 @@ class BookingFragment : Fragment() {
 
         fStore = FirebaseFirestore.getInstance()
 
-        getListKetek()
+        getListKetek(requireContext())
     }
 
-    private fun getListKetek() {
+    private fun getListKetek(context: Context) {
         fStore.collection("Drivers").get()
             .addOnSuccessListener { driverResult ->
                 val listKetek = ArrayList<Ketek>()
 
                 for (driverDocument in driverResult) {
                     val driverDocumentId = driverDocument.id
+                    Log.e("DriverID", driverDocumentId)
 
                     fStore.collection("Drivers").document(driverDocumentId)
                         .collection("Keteks").get()
                         .addOnSuccessListener { keteksResult ->
                             for (ketekDocument in keteksResult) {
-                                val ketekId = ketekDocument.getString("KetekID")
+                                val ketekId = ketekDocument.id
                                 val username = ketekDocument.getString("IDUser")
                                 val photo = ketekDocument.getString("PhotoUrl")
                                 val name = ketekDocument.getString("Name")
@@ -61,10 +63,21 @@ class BookingFragment : Fragment() {
                                 val capacity = ketekDocument.getLong("Capacity")?.toInt()
                                 val price = ketekDocument.getString("Price")
 
-                                val ketek = Ketek(ketekId, username, photo, name, placeStart, placeEnd, time, capacity, price)
+                                val ketek = Ketek(
+                                    ketekId,
+                                    driverDocumentId,
+                                    username,
+                                    photo,
+                                    name,
+                                    placeStart,
+                                    placeEnd,
+                                    time,
+                                    capacity,
+                                    price
+                                )
                                 listKetek.add(ketek)
                             }
-                            showRecycleList(listKetek)
+                            showRecycleList(listKetek, context)
                         }
                         .addOnFailureListener { e ->
                             Log.e("TAG", "Error getting Keteks documents: $e")
@@ -77,8 +90,8 @@ class BookingFragment : Fragment() {
     }
 
 
-    private fun showRecycleList(listKetek: ArrayList<Ketek>) {
-        rvKetek.layoutManager = LinearLayoutManager(requireContext())
+    private fun showRecycleList(listKetek: ArrayList<Ketek>, context: Context) {
+        rvKetek.layoutManager = LinearLayoutManager(context)
         val listKetekAdapter = ListKetekAdapter(listKetek)
 
         listKetekAdapter.setOnItemClickListener(object : ListKetekAdapter.OnItemClickListener {
@@ -88,7 +101,11 @@ class BookingFragment : Fragment() {
                 val bundle = Bundle().apply {
                     putParcelable(BookingDetailFragment.ITEM, selectedItem)
                 }
-                findNavController().navigate(R.id.action_bookingFragment_to_bookingDetailFragment, bundle)
+                Log.e("KETEKID", "${selectedItem.ketekId}")
+                findNavController().navigate(
+                    R.id.action_bookingFragment_to_bookingDetailFragment,
+                    bundle
+                )
             }
         })
 

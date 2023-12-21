@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Ketek(
     val ketekId: String?,
+    val driverId: String?,
     val username: String?,
     val photo: String?,
     val name: String?,

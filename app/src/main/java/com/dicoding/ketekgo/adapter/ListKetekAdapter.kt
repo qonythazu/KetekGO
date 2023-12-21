@@ -45,7 +45,7 @@ class ListKetekAdapter(private val listKetek: ArrayList<Ketek>) : RecyclerView.A
     override fun getItemCount(): Int = listKetek.size
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val (ketekId, username, photo, name, from, to, time, capacity, price) = listKetek[position]
+        val (_, _, username, photo, name, from, to, time, capacity, price) = listKetek[position]
         holder.tvItemProfileName.text = username
         Glide.with(holder.itemView.context)
             .load(photo)

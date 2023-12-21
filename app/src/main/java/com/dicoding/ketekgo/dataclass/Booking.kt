@@ -6,5 +6,6 @@ data class Booking(
     val time: String,
     val passengers: Int,
     val totalPrice: Int,
-    val ketekId: String? = null
+    val ketekId: String? = null,
+    val driverId: String? = null
 )

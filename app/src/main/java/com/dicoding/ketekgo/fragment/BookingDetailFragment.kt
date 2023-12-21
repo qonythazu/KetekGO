@@ -108,33 +108,33 @@ class BookingDetailFragment : Fragment() {
         if (userId != null) {
             val customerRef = fStore.collection("Customers").document(userId)
             val bookingsRef = customerRef.collection("Bookings")
-
             val bookingData = mapOf(
                 "name" to booking.name,
                 "destination" to booking.destination,
                 "time" to booking.time,
                 "passengers" to booking.passengers,
                 "ketekId" to booking.ketekId,
+                "driverId" to booking.driverId,
                 "totalPrice" to booking.totalPrice,
                 "status" to status,
-                "date" to date
+                "date" to date,
             )
 
             bookingsRef.add(bookingData)
                 .addOnSuccessListener { documentReference ->
                     val bookingId = documentReference.id
-
                     val ketekId = booking.ketekId
+                    val driverId = booking.driverId
+
                     Log.d("DEBUG", "ketekId: $ketekId")
-                    val ketekRef = fStore.collection("Keteks").document(ketekId.toString())
+                    Log.d("DEBUG", "bookingId: $bookingId")
+                    Log.d("DEBUG", "driverId: $driverId")
+                    val ketekRef = fStore.collection("Drivers").document(ketekId.toString())
 
                     ketekRef.get()
-                        .addOnSuccessListener { ketekSnapshot ->
-                            Log.d("DEBUG", "ketekSnapshot: ${ketekSnapshot.data}")
-
-                            val driverId = ketekSnapshot.getString("driverId")
-                            Log.d("DEBUG", "driverId: $driverId")
-
+                        .addOnSuccessListener { _ ->
+//                            val driverId = booking.driverId
+//                            Log.d("DEBUG", "driverId: $driverId")
                             if (driverId != null) {
                                 // Menambahkan data ke koleksi "History" pada akun Driver
                                 val driverRef = fStore.collection("Drivers").document(driverId)
@@ -158,15 +158,27 @@ class BookingDetailFragment : Fragment() {
                                     .addOnSuccessListener {
                                         isLoading(false, binding.progressBarBooking)
                                         findNavController().navigate(R.id.historyFragment)
-                                        Toast.makeText(requireContext(), "Success Booking", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Success Booking",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                     .addOnFailureListener { e ->
                                         isLoading(false, binding.progressBarBooking)
-                                        Toast.makeText(requireContext(), "Error: $e", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            requireContext(),
+                                            "Error: $e",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                             } else {
                                 isLoading(false, binding.progressBarBooking)
-                                Toast.makeText(requireContext(), "Driver not found", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Driver not found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
                         .addOnFailureListener { e ->
@@ -199,8 +211,10 @@ class BookingDetailFragment : Fragment() {
                 val cleanPrice = rawPrice.replace(".", "").toInt()
                 val status = "Belum dibayar"
                 val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+                val ketekId = it.ketekId
+                val driverId = it.driverId
 
-                val booking = Booking(name, destination, time, passengers, cleanPrice, it.ketekId)
+                val booking = Booking(name, destination, time, passengers, cleanPrice, ketekId, driverId)
                 saveBookingToFirestore(booking, status, date)
             }
         }
