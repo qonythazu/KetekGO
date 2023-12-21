@@ -27,7 +27,7 @@ class BookingDetailFragment : Fragment() {
     private var _binding: FragmentBookingDetailBinding? = null
     private val binding get() = _binding!!
     private var basePrice = ""
-
+    private var selectedKetek: Ketek? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +40,7 @@ class BookingDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val selectedItem: Ketek? = arguments?.getParcelable(ITEM)
+        selectedKetek = arguments?.getParcelable(ITEM)
 
         selectedItem?.let {
             setDisplay(it)
@@ -113,6 +114,7 @@ class BookingDetailFragment : Fragment() {
                 "destination" to booking.destination,
                 "time" to booking.time,
                 "passengers" to booking.passengers,
+                "ketekId" to booking.ketekId,
                 "totalPrice" to booking.totalPrice,
                 "status" to status,
                 "date" to date
@@ -123,11 +125,15 @@ class BookingDetailFragment : Fragment() {
                     val bookingId = documentReference.id
 
                     val ketekId = booking.ketekId
-                    val ketekRef = fStore.collection("Keteks").document(ketekId)
+                    Log.d("DEBUG", "ketekId: $ketekId")
+                    val ketekRef = fStore.collection("Keteks").document(ketekId.toString())
 
                     ketekRef.get()
                         .addOnSuccessListener { ketekSnapshot ->
+                            Log.d("DEBUG", "ketekSnapshot: ${ketekSnapshot.data}")
+
                             val driverId = ketekSnapshot.getString("driverId")
+                            Log.d("DEBUG", "driverId: $driverId")
 
                             if (driverId != null) {
                                 // Menambahkan data ke koleksi "History" pada akun Driver
@@ -146,6 +152,7 @@ class BookingDetailFragment : Fragment() {
                                     "totalPrice" to booking.totalPrice,
                                     "date" to date
                                 )
+                                Log.d("DEBUG", "historyData: $historyData")
 
                                 historyRef.add(historyData)
                                     .addOnSuccessListener {
@@ -183,17 +190,19 @@ class BookingDetailFragment : Fragment() {
 
         builder.setPositiveButton("Yes") { dialog, _ ->
             dialog.dismiss()
-            val name = binding.tvItemKetekName.text.toString()
-            val destination = binding.ketekTo.text.toString()
-            val time = binding.tvTime.text.toString()
-            val passengers = binding.edPassengers.text.toString().toInt()
-            val rawPrice = binding.btnPay.text.toString().replace("[Rp,]".toRegex(), "")
-            val cleanPrice = rawPrice.replace(".", "").toInt()
-            val status = "Belum dibayar"
-            val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+            selectedKetek?.let {
+                val name = it.name.toString()
+                val destination = it.to.toString()
+                val time = it.time.toString()
+                val passengers = binding.edPassengers.text.toString().toInt()
+                val rawPrice = binding.btnPay.text.toString().replace("[Rp,]".toRegex(), "")
+                val cleanPrice = rawPrice.replace(".", "").toInt()
+                val status = "Belum dibayar"
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
-            val booking = Booking(name, destination, time, passengers, cleanPrice)
-            saveBookingToFirestore(booking, status, date)
+                val booking = Booking(name, destination, time, passengers, cleanPrice, it.ketekId)
+                saveBookingToFirestore(booking, status, date)
+            }
         }
 
         builder.setNegativeButton("Cancel") { dialog, _ ->

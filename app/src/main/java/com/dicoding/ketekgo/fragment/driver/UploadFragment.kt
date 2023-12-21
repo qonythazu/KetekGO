@@ -48,7 +48,7 @@ class UploadFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentUploadBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentUploadBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -59,7 +59,7 @@ class UploadFragment : Fragment() {
         val capacityEditText: EditText? = binding?.edCapacity
         val priceEditText: EditText? = binding?.edPrice
         val placeStartEditText: EditText? = binding?.edPlaceStart
-        val placeEndEditText : EditText? = binding?.edPlaceEnd
+        val placeEndEditText: EditText? = binding?.edPlaceEnd
         val timeEditText: EditText? = binding?.edTime
 
         isLoading(false, binding?.progressUpload!!)
@@ -68,7 +68,7 @@ class UploadFragment : Fragment() {
         binding?.btnUpload?.setOnClickListener {
             isLoading(true, binding?.progressUpload!!)
             val name = nameEditText?.text.toString()
-            val capacity = capacityEditText?.text.toString().toInt()
+            val capacity = capacityEditText?.text.toString().toIntOrNull() ?: 0
             val price = priceEditText?.text.toString()
             val placeStart = placeStartEditText?.text.toString()
             val placeEnd = placeEndEditText?.text.toString()
@@ -177,9 +177,8 @@ class UploadFragment : Fragment() {
 
             val uploadTask = imageRef.putFile(Uri.fromFile(getFile))
 
-            uploadTask.addOnSuccessListener { taskSnapshot ->
+            uploadTask.addOnSuccessListener { _ ->
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    // Setelah mendapatkan URL gambar, simpan data ke Firestore
                     saveDataToFirestore(
                         name,
                         uri.toString(),
@@ -191,7 +190,6 @@ class UploadFragment : Fragment() {
                     )
                 }
             }.addOnFailureListener { e ->
-                // Gagal mengunggah gambar
                 Toast.makeText(
                     requireContext(),
                     "Failed to upload image to Firebase Storage: $e",
@@ -199,7 +197,6 @@ class UploadFragment : Fragment() {
                 ).show()
             }
         } else {
-            // File gambar tidak ditemukan
             Toast.makeText(requireContext(), "Image file not found", Toast.LENGTH_SHORT).show()
         }
     }
@@ -223,7 +220,8 @@ class UploadFragment : Fragment() {
                 "Price" to price,
                 "PlaceStart" to placeStart,
                 "PlaceEnd" to placeEnd,
-                "Time" to time
+                "Time" to time,
+                "driverId" to userId // Tambahkan driverId ke data Ketek
             )
 
             db.collection("Drivers").document(userId)

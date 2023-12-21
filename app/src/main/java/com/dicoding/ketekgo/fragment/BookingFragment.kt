@@ -51,6 +51,7 @@ class BookingFragment : Fragment() {
                         .collection("Keteks").get()
                         .addOnSuccessListener { keteksResult ->
                             for (ketekDocument in keteksResult) {
+                                val ketekId = ketekDocument.getString("KetekID")
                                 val username = ketekDocument.getString("IDUser")
                                 val photo = ketekDocument.getString("PhotoUrl")
                                 val name = ketekDocument.getString("Name")
@@ -60,7 +61,7 @@ class BookingFragment : Fragment() {
                                 val capacity = ketekDocument.getLong("Capacity")?.toInt()
                                 val price = ketekDocument.getString("Price")
 
-                                val ketek = Ketek(username, photo, name, placeStart, placeEnd, time, capacity, price)
+                                val ketek = Ketek(ketekId, username, photo, name, placeStart, placeEnd, time, capacity, price)
                                 listKetek.add(ketek)
                             }
                             showRecycleList(listKetek)
