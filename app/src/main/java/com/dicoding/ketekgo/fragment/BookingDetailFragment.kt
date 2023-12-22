@@ -48,16 +48,22 @@ class BookingDetailFragment : Fragment() {
         }
 
         binding.edPassengers.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(textView: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(textView: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(textView: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun onTextChanged(textView: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
             override fun afterTextChanged(textView: Editable?) {
                 val enteredText = textView.toString().takeIf { it.isNotBlank() }
-                val priceInteger = enteredText?.split(".")?.firstOrNull()?.toIntOrNull() ?: 0
-                changeButtonPrice(priceInteger)
+                val maxCapacity = selectedKetek?.capacity ?: 0
+
+                val enteredPassengers = enteredText?.toIntOrNull() ?: 0
+                val validPassengers = enteredPassengers.coerceAtMost(maxCapacity)
+
+                if (enteredPassengers != validPassengers) {
+                    binding.edPassengers.setText(validPassengers.toString())
+                }
+
+                changeButtonPrice(validPassengers)
             }
         })
 
@@ -126,17 +132,11 @@ class BookingDetailFragment : Fragment() {
                     val ketekId = booking.ketekId
                     val driverId = booking.driverId
 
-                    Log.d("DEBUG", "ketekId: $ketekId")
-                    Log.d("DEBUG", "bookingId: $bookingId")
-                    Log.d("DEBUG", "driverId: $driverId")
                     val ketekRef = fStore.collection("Drivers").document(ketekId.toString())
 
                     ketekRef.get()
                         .addOnSuccessListener { _ ->
-//                            val driverId = booking.driverId
-//                            Log.d("DEBUG", "driverId: $driverId")
                             if (driverId != null) {
-                                // Menambahkan data ke koleksi "History" pada akun Driver
                                 val driverRef = fStore.collection("Drivers").document(driverId)
                                 val historyRef = driverRef.collection("History")
 

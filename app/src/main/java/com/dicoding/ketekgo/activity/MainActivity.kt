@@ -62,7 +62,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.bookingDetailFragment -> {
                     hideBottomNavigationBar()
                 }
-
+                R.id.destinationGridFragment -> {
+                    hideBottomNavigationBar()
+                }
+                R.id.destinationInputPreferenceFragment -> {
+                    hideBottomNavigationBar()
+                }
                 else -> {
                     showBottomNavigationBar()
                 }
