@@ -1,4 +1,6 @@
 # KetekGO
+![Logo](https://github.com/qonythazu/KetekGO/blob/main/app/src/main/res/drawable/logo.png)
+
 Booking Application for Ketek Boat and Destination Recommendation in The City of Palembang
 
 ## Features
@@ -24,3 +26,7 @@ Booking Application for Ketek Boat and Destination Recommendation in The City of
 - It will get you to the Detail Booking, you can change the passenger number as you need
 - Click button "Pay" and click "YES" on the dialog show
 - Once you success to book, you'll head to HISTORY page and see your booking history
+
+## Contact
+If you have a question about the application, feel free to contact me at :
+- Email : qonitaarif5@gmail.com
