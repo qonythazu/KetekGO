@@ -48,6 +48,7 @@
         android:layout_height="wrap_content"
         android:visibility="visible"
         android:background="@color/main_blue"
+        android:elevation="8dp"
         app:itemActiveIndicatorStyle="@color/white"
         app:itemIconTint="@color/white"
         app:itemTextColor="@color/white"

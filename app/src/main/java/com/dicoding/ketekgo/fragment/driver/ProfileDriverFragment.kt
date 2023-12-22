@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
@@ -18,7 +19,7 @@ import com.dicoding.ketekgo.viewmodel.ViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ProfileDriverFragment : Fragment() {
+class ProfileDriverFragment : Fragment(), ListKetekDriverAdapter.OnDeleteClickListener {
     private lateinit var fStore: FirebaseFirestore
     private lateinit var rvKetekDriver: RecyclerView
     private var list = ArrayList<KetekDriver>()
@@ -105,8 +106,40 @@ class ProfileDriverFragment : Fragment() {
 
     private fun showRecycleList() {
         rvKetekDriver.layoutManager = LinearLayoutManager(requireContext())
-        val listKetekDriverAdapter = ListKetekDriverAdapter(list)
+        val listKetekDriverAdapter = ListKetekDriverAdapter(list, this)
         rvKetekDriver.adapter = listKetekDriverAdapter
+    }
+
+    override fun onDeleteClick(position: Int) {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+
+        alertDialogBuilder.setTitle("Logout Confirmation")
+        alertDialogBuilder.setMessage("Are you sure you want to delete?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+            if (userId != null) {
+                val ketekDriver = list[position]
+                Log.d("Delete", "Before deletion - position: $position")
+                fStore.collection("Drivers").document(userId)
+                    .collection("Keteks").document(ketekDriver.name.toString()).delete()
+                    .addOnSuccessListener {
+                        Log.d("Delete", "After deletion - position: $position")
+                        list.removeAt(position)
+                        rvKetekDriver.adapter?.notifyItemRemoved(position)
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("Delete Error", "$exception")
+                    }
+            }
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 
     override fun onDestroy() {

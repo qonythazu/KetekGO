@@ -3,9 +3,9 @@ package com.dicoding.ketekgo.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.dicoding.ketekgo.R
@@ -79,8 +79,26 @@ class DriverActivity : AppCompatActivity() {
         binding.toolbar.visibility = View.VISIBLE
     }
     private fun signOut() {
-        auth.signOut()
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
+        showLogoutConfirmationDialog()
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+
+        alertDialogBuilder.setTitle("Logout Confirmation")
+        alertDialogBuilder.setMessage("Are you sure you want to log out?")
+
+        alertDialogBuilder.setPositiveButton("Yes") { _, _ ->
+            auth.signOut()
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
+        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }

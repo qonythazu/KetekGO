@@ -10,7 +10,11 @@ import com.bumptech.glide.Glide
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.dataclass.KetekDriver
 
-class ListKetekDriverAdapter(private val listKetekDriver: ArrayList<KetekDriver>) : RecyclerView.Adapter<ListKetekDriverAdapter.ListViewHolder>(){
+class ListKetekDriverAdapter(
+    private val listKetekDriver: ArrayList<KetekDriver>,
+    private val onDeleteClickListener: OnDeleteClickListener
+) : RecyclerView.Adapter<ListKetekDriverAdapter.ListViewHolder>() {
+
     inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgPhoto: ImageView = itemView.findViewById((R.id.img_item_ketek_photo))
         val tvItemKetekName: TextView = itemView.findViewById(R.id.tv_item_ketek_name)
@@ -19,6 +23,11 @@ class ListKetekDriverAdapter(private val listKetekDriver: ArrayList<KetekDriver>
         val tvItemKetekTime: TextView = itemView.findViewById(R.id.tv_item_ketek_time)
         val tvItemKetekCapacity: TextView = itemView.findViewById(R.id.tv_item_ketek_capacity)
         val tvItemKetekPrice: TextView = itemView.findViewById(R.id.tv_item_ketek_cost)
+        val btnDelete: TextView = itemView.findViewById(R.id.btn_delete)
+    }
+
+    interface OnDeleteClickListener {
+        fun onDeleteClick(position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
@@ -37,6 +46,9 @@ class ListKetekDriverAdapter(private val listKetekDriver: ArrayList<KetekDriver>
         holder.tvItemKetekTime.text = time
         holder.tvItemKetekCapacity.text = capacity.toString()
         holder.tvItemKetekPrice.text = price
+        holder.btnDelete.setOnClickListener {
+            onDeleteClickListener.onDeleteClick(position)
+        }
     }
 
     override fun getItemCount(): Int = listKetekDriver.size

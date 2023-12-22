@@ -20,7 +20,7 @@
             android:id="@+id/img_item_destination_photo"
             android:layout_width="160dp"
             android:layout_height="110dp"
-            tools:src="@tools:sample/backgrounds/scenic"
+            android:src="@drawable/ic_launcher_foreground"
             android:contentDescription="@string/destination"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

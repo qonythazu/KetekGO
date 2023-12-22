@@ -2,10 +2,11 @@ package com.dicoding.ketekgo.fragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.ketekgo.R
 import com.dicoding.ketekgo.adapter.ListDestinationAdapter
 import com.dicoding.ketekgo.adapter.ListKetekAdapter
+import com.dicoding.ketekgo.data.Result
 import com.dicoding.ketekgo.databinding.FragmentHomeBinding
 import com.dicoding.ketekgo.dataclass.Destination
 import com.dicoding.ketekgo.dataclass.Ketek
+import com.dicoding.ketekgo.dataclass.PreferencesRequest
+import com.dicoding.ketekgo.viewmodel.UserViewModel
+import com.dicoding.ketekgo.viewmodel.ViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() {
@@ -27,6 +33,10 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: UserViewModel by activityViewModels {
+        ViewModelFactory.getInstance(requireActivity())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,8 +62,47 @@ class HomeFragment : Fragment() {
         rvDestination = binding.rvDestination
         rvDestination.setHasFixedSize(true)
 
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        currentUser?.let { user ->
+            val db = FirebaseFirestore.getInstance()
+            val preferencesCollection =
+                db.collection("Customers").document(user.uid).collection("Preferences")
+
+            preferencesCollection.get().addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    val data = documents.documents
+                    for (i in data) {
+                        val sampleData = i.data?.values
+                        sampleData?.forEach {sample ->
+                            val listData = sample as List<String>
+                            val preferencesData = PreferencesRequest(listData)
+                            Log.e("HADEH", "$preferencesData")
+                            viewModel.recomendDestination(preferencesData).observe(requireActivity()) { result ->
+                                when (result) {
+                                    is Result.Loading -> {
+                                        Log.e("DEBUGAPI", "Loading")
+                                    }
+
+                                    is Result.Success -> {
+                                        val destination = result.data.topLabels?.forEach { dest ->
+                                            Destination(photo = null, name = dest.toString())
+                                        }
+                                        showRecycleDestination(destination as Destination)
+                                        Log.e("SUCCESS", "$destination")
+                                    }
+
+                                    is Result.Error -> {
+                                        Log.e("ERROR", result.error)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         listDestination.addAll(getListDestination())
-        showRecycleDestination()
     }
 
     private fun getListKetek() {
@@ -118,7 +167,10 @@ class HomeFragment : Fragment() {
                 val bundle = Bundle().apply {
                     putParcelable(BookingDetailFragment.ITEM, selectedItem)
                 }
-                findNavController().navigate(R.id.action_homeFragment_to_bookingDetailFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_homeFragment_to_bookingDetailFragment,
+                    bundle
+                )
             }
         })
 
@@ -130,14 +182,16 @@ class HomeFragment : Fragment() {
         val dataDestinationName = resources.getStringArray(R.array.data_destination_name)
         val listDestination = ArrayList<Destination>()
         for (i in dataDestinationName.indices) {
-            val destination = Destination(dataDestinationPhoto.getResourceId(i, -1), dataDestinationName[i])
+            val destination =
+                Destination(dataDestinationPhoto.getResourceId(i, -1), dataDestinationName[i])
             listDestination.add(destination)
         }
         return listDestination
     }
 
-    private fun showRecycleDestination() {
-        rvDestination.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    private fun showRecycleDestination(list: Destination) {
+        rvDestination.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val listDestinationAdapter = ListDestinationAdapter(listDestination)
         rvDestination.adapter = listDestinationAdapter
     }

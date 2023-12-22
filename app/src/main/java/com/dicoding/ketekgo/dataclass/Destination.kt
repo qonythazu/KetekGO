@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Destination (
-    val photo: Int,
+    val photo: Int? = null,
     val name: String
 ) : Parcelable
